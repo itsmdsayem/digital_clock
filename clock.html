@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Clock</title>
+    <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css"/>
+    <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: black;
+            color: cyan;
+            font-family: "ds-digital", sans-serif;
+        }
+        #clock {
+            font-size: 80px;
+        }
+    </style>
+</head>
+<body>
+    <div id="clock">--:--:--</div>
+
+    <py-script>
+        from datetime import datetime
+        from js import document
+
+        def update_clock():
+            now = datetime.now().strftime("%H:%M:%S")
+            document.getElementById("clock").innerText = now
+
+        # Call update_clock every second
+        from pyodide import create_proxy
+        import asyncio
+
+        async def main():
+            while True:
+                update_clock()
+                await asyncio.sleep(1)
+
+        asyncio.ensure_future(main())
+    </py-script>
+</body>
+</html>
